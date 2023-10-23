@@ -18,15 +18,15 @@
     </div>
 </div>
  
+<span id="searchSubjectError" class="text-danger"></span>
 <h3>Filter by Subject</h3>
 <div class="container">
     <form method="get" name="searchForm">
-        <input type="hidden" name="searchMailNumber" value="@ViewBag.SearchMailNumber" />
+        <input type="hidden" name="searchMailNumber" value="@ViewBag.SearchMailNumber" onsubmit="return validateSearchForm()"/>
         <div class="input-group mb-3">
             <input type="text" class="form-control" name="searchSubject" placeholder="Input Mail Subject" value="@ViewBag.SearchSubject">
             <div class="input-group-append">
                 <button id="searchButton" type="submit" class="btn btn-primary" name="searchButton" onclick="loadDataAndDisplayTable_()">Search Subject</button>
-    
             </div>
         </div>
     </form>
@@ -45,6 +45,7 @@
             <div class="col-md-2">
                 <button id="filterButton" type="submit" class="btn btn-primary" name="filterButton" onclick="loadDataAndDisplayTable()">Filter Dates</button>
             </div>
+            <span id="searchSubjectError" class="text-danger"></span>
         </div>
     </form>
     @if (Model != null && Model.Any())

@@ -10,8 +10,6 @@ namespace automationTest.Context
         {
         }
         public DbSet<tblElasticData> tblElasticData { get; set; }
-        
-
     }
 }
 

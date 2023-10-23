@@ -29,9 +29,8 @@ namespace automationTest.Service
                 searchSubject = searchSubject.Replace(" ", ""); // Remove whitespace from the search subject
 
                 return ProjectElasticDataProperties(_context.tblElasticData
-                .Where(data => data.Subject != null && data.Subject.Replace(" ", "").Equals(searchSubject)))
-                .ToList();
-
+                    .Where(data => data.Subject != null && data.Subject.Replace(" ", "").Contains(searchSubject)))
+                    .ToList();
             }
             else
             {

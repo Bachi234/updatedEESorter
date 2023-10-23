@@ -1,6 +1,7 @@
 ﻿@model List<tblEvent>
 @{
     ViewData["Title"] = "Search Mail Numbers";
+    string searchMailNumbers = ViewBag.SearchMailNumbers as string;
 }
 <h2>@ViewData["Title"]</h2>
 
@@ -9,7 +10,7 @@
     <!-- Mail number search bar -->
     <form id="mailNumberForm" method="get" action="@Url.Action("Index", "Home")">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" id="searchMailNumberInput" name="searchMailNumbers" placeholder="Search Mail Numbers">
+            <input type="text" class="form-control" id="searchMailNumberInput" name="searchMailNumbers" placeholder="Search Mail Numbers" value="@searchMailNumbers">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">Search Mail Numbers</button>
             </div>
@@ -50,21 +51,5 @@
                 'copy'
             ]
         });
-
-        // Handle form submission
-        $('form').on('submit', function () {
-            var searchMailNumbers = $('[name="searchMailNumbers"]').val();
-            localStorage.setItem('searchMailNumbers', searchMailNumbers);
-            console.log('searchMailNumbers:', searchMailNumbers);
-        });
-
-        // Check if there's a stored search query on page load
-        var storedSearchQuery = localStorage.getItem('searchMailNumbers');
-        if (storedSearchQuery) {
-            // Populate the search input field with the stored query
-            $('#searchMailNumberInput').val(storedSearchQuery);
-        }
     });
-
 </script>
-

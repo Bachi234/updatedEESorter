@@ -23,10 +23,10 @@ namespace automationTest.Controllers
             ViewBag.SearchMailNumbers = searchMailNumbers;
             List<tblEvent> events = new List<tblEvent>();
 
-            if (!string.IsNullOrEmpty(searchMailNumbers))
+            if (!string.IsNullOrWhiteSpace(searchMailNumbers))
             {
-                // Split the input by the delimiter (e.g., comma) to get individual mail numbers
-                string[] mailNumbers = searchMailNumbers.Split(',');
+                // Split the input by whitespace to get individual mail numbers
+                string[] mailNumbers = searchMailNumbers.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var mailNumber in mailNumbers)
                 {
@@ -34,9 +34,9 @@ namespace automationTest.Controllers
                     events.AddRange(eventsForMailNumber);
                 }
             }
-
             return View(events);
         }
+
         [HttpGet]
         public IActionResult DisplayElasticData(string searchMailNumbers, string searchSubject, DateTime? startDate, DateTime? endDate)
         {
@@ -44,9 +44,12 @@ namespace automationTest.Controllers
             ViewBag.SearchMailNumber = searchMailNumbers;
             ViewBag.SearchSubjectDateStart = startDate;
             ViewBag.SearchSubjectDateEnd = endDate;
-
+            if (string.IsNullOrEmpty(searchSubject))
+            {
+                ModelState.AddModelError("searchSubject", "Please enter a valid search subject.");
+            }
             // Fetch the data based on your search criteria
-          if (startDate != null && endDate != null)
+            if (startDate != null && endDate != null)
             {
                 List<tblElasticData> elasticData = _tblElasticData.GetElasticDataByDate(startDate, endDate);
                 // Now, you can perform detailed aggregation on the data using LINQ
@@ -66,6 +69,12 @@ namespace automationTest.Controllers
                     .ToList();
                 return View(aggregatedData);
             }
+
+            if (!ModelState.IsValid)
+            {
+                return View(); // Return the view with error messages
+            }
+
             else
             {
                 List<tblElasticData> elasticData = _tblElasticData.GetElasticDataBySubject(searchSubject);

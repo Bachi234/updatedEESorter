@@ -26,7 +26,7 @@ $(document).ready(function () {
                     orientation: 'landscape',
                     pageSize: 'LETTER',
                     filename: 'ElasticReport'
-                }
+                },             
             ],
             language: {
                 search: "Table Filter:"
@@ -69,6 +69,22 @@ function hideLoadingModal() {
     loadingModal.style.display = "none";
 }
 
+function validateSearchForm() {
+    var searchSubject = document.querySelector('input[name="searchSubject"]').value.trim();
+    var errorElement = document.querySelector('#searchSubjectError');
+
+    if (searchSubject === '') {
+        errorElement.textContent = 'Please enter a valid search subject.';
+        return false; // Prevent form submission
+    }
+
+    // Clear any previous error messages
+    errorElement.textContent = '';
+
+    return true; // Allow form submission
+}
+
+
 // Function to load data and update the table
 async function loadDataAndDisplayTable() {
     try {
@@ -93,6 +109,11 @@ async function loadDataAndDisplayTable() {
         hideLoadingModal();
     } catch (error) {
         console.error('Error:', error);
+
+         // Display an error message to the user
+        var errorElement = document.querySelector('#searchSubjectError');
+        errorElement.textContent = 'An error occurred while fetching data. Please try again.';
+
         // Handle any errors or show an error message
         hideLoadingModal(); // Hide the loading modal in case of an error
     }
